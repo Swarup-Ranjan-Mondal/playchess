@@ -1,0 +1,72 @@
+.dropdown {
+  min-width: 100%;
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.options_list {
+  color: #f5f6fa;
+  background-color: #2f3640;
+  max-height: 0;
+  min-width: 100%;
+  width: max-content;
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+  border-radius: 8px;
+  overflow: hidden;
+  order: 1;
+  z-index: 1;
+}
+
+.option {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.option:hover {
+  background: #414b57;
+}
+
+.select {
+  color: #f5f6fa;
+  background: #2f3640;
+  border-radius: 8px;
+  margin-right: 5px;
+  margin-bottom: 2px;
+  min-width: 100%;
+  width: max-content;
+  height: max-content;
+  padding: 10px 20px;
+  order: 0;
+  cursor: pointer;
+  position: relative;
+  opacity: 0.95;
+  z-index: 1;
+}
+
+.select .arrow {
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  position: absolute;
+  height: 100%;
+  width: 28px;
+  top: 5px;
+  right: 0;
+
+  transition: all 0.4s ease-in-out;
+}
+
+.options_list.active {
+  max-height: 240px;
+  opacity: 0.98;
+}
+
+.options_list.active + .select .arrow {
+  transform: rotate(-180deg);
+  top: -5px;
+  right: 0;
+}
