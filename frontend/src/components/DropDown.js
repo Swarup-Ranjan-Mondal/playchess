@@ -63,7 +63,7 @@ const DropDown = ({ options, value, onChange }) => {
         {selected === "" ? "Select..." : selected}
         <div
           className="arrow"
-          style={{ backgroundImage: "url(images/down_arrow.png)" }}
+          style={{ backgroundImage: "url(/images/down_arrow.png)" }}
         />
       </div>
     </div>

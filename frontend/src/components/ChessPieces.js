@@ -28,7 +28,7 @@ const ChessPieces = ({
                 } ${String.fromCharCode(97 + j)}${ranks - i}`}
                 id={getAnIdOfPiece(pieceSymbol, j)}
                 style={{
-                  backgroundImage: `url(images/pieces/${imageNameOfPieces[pieceSymbol]}.svg)`,
+                  backgroundImage: `url(/images/pieces/${imageNameOfPieces[pieceSymbol]}.svg)`,
                   top: `${i * 100}%`,
                   right: `-${j * 100}%`,
                   bottom: `-${i * 100}%`,

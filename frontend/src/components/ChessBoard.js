@@ -21,7 +21,7 @@ const ChessBoard = ({
                 id={`${String.fromCharCode(97 + file)}${ranks - rank}`}
                 className={`square ${color}`}
                 style={{
-                  backgroundImage: `url(images/squares/square_${
+                  backgroundImage: `url(/images/squares/square_${
                     color[0] + color[color.length - 1]
                   }.png)`,
                 }}

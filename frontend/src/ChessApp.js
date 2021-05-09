@@ -33,86 +33,90 @@ function ChessApp() {
   return (
     <Router>
       <div className="App">
-        <div className="left_container">
-          <Route path="/">
-            <Players
-              playerOptions={playerOptions}
-              engineOptions={engineOptions}
-              player1={player1}
-              setPlayer1={setPlayer1}
-              player2={player2}
-              setPlayer2={setPlayer2}
-              engine1={engine1}
-              setEngine1={setEngine1}
-              engine2={engine2}
-              setEngine2={setEngine2}
-            />
-            <div className="button_belt">
-              <button
-                id="new_game_button"
-                className="btn btn_primary"
-                onClick={(e) => setStartNewGame(true)}
-                disabled={startNewGame}
-              >
-                New Game
-              </button>
+        <Route exact path="/play/(now|online)">
+          <div className="left_container">
+            <Route exact path="/play/now">
+              <Players
+                playerOptions={playerOptions}
+                engineOptions={engineOptions}
+                player1={player1}
+                setPlayer1={setPlayer1}
+                player2={player2}
+                setPlayer2={setPlayer2}
+                engine1={engine1}
+                setEngine1={setEngine1}
+                engine2={engine2}
+                setEngine2={setEngine2}
+              />
+              <div className="button_belt">
+                <button
+                  id="new_game_button"
+                  className="btn btn_primary"
+                  onClick={(e) => setStartNewGame(true)}
+                  disabled={startNewGame}
+                >
+                  New Game
+                </button>
+              </div>
+            </Route>
+          </div>
+          <div className="center_container">
+            <Route path="/play/:slug">
+              <SetUpBoard
+                ranks={ranks}
+                files={files}
+                player1={player1}
+                player2={player2}
+                engine1={engine1}
+                engine2={engine2}
+                startNewGame={startNewGame}
+                setStartNewGame={setStartNewGame}
+                imageNameOfPieces={imageNameOfPieces}
+              />
+            </Route>
+          </div>
+          <div className="right_container">
+            <div className="captured_pieces_row black">
+              <div className="captured_pieces_group P"></div>
+              <div className="captured_pieces_group B"></div>
+              <div className="captured_pieces_group N"></div>
+              <div className="captured_pieces_group R"></div>
+              <div className="captured_pieces_group Q"></div>
             </div>
-          </Route>
-        </div>
-        <div className="center_container">
-          <SetUpBoard
-            ranks={ranks}
-            files={files}
-            player1={player1}
-            player2={player2}
-            engine1={engine1}
-            engine2={engine2}
-            startNewGame={startNewGame}
-            setStartNewGame={setStartNewGame}
-            imageNameOfPieces={imageNameOfPieces}
-          />
-        </div>
-        <div className="right_container">
-          <div className="captured_pieces_row black">
-            <div className="captured_pieces_group P"></div>
-            <div className="captured_pieces_group B"></div>
-            <div className="captured_pieces_group N"></div>
-            <div className="captured_pieces_group R"></div>
-            <div className="captured_pieces_group Q"></div>
+            <div className="app_board">
+              <span className="player_name2">
+                {player2 === "human"
+                  ? `Player${player1 === "human" ? "2" : ""}`
+                  : `Engine${player1 === "engine" ? "2" : ""} (${
+                      engine2 === "stockfish"
+                        ? "Stockfish 13"
+                        : engine2 === "komodo"
+                        ? "Komodo 12"
+                        : ""
+                    })`}
+              </span>
+              <MoveHistory />
+              <span className="player_name1">
+                {player1 === "human"
+                  ? `Player${player2 === "human" ? "1" : ""}`
+                  : `Engine${player2 === "engine" ? "1" : ""} (${
+                      engine1 === "stockfish"
+                        ? "Stockfish 13"
+                        : engine1 === "komodo"
+                        ? "Komodo 12"
+                        : ""
+                    })`}
+              </span>
+            </div>
+            <div className="captured_pieces_row white">
+              <div className="captured_pieces_group P"></div>
+              <div className="captured_pieces_group B"></div>
+              <div className="captured_pieces_group N"></div>
+              <div className="captured_pieces_group R"></div>
+              <div className="captured_pieces_group Q"></div>
+            </div>
           </div>
-          <div className="app_board">
-            <span className="player_name2">
-              {player2 === "human"
-                ? `Player${player1 === "human" ? "2" : ""}`
-                : `Engine${player1 === "engine" ? "2" : ""} (${
-                    engine2 === "stockfish"
-                      ? "Stockfish 13"
-                      : engine2 === "komodo"
-                      ? "Komodo 12"
-                      : ""
-                  })`}
-            </span>
-            <MoveHistory />
-            <span className="player_name1">
-              {player1 === "human"
-                ? `Player${player2 === "human" ? "1" : ""}`
-                : `Engine${player2 === "engine" ? "1" : ""} (${
-                    engine1 === "stockfish"
-                      ? "Stockfish 13"
-                      : engine1 === "komodo"
-                      ? "Komodo 12"
-                      : ""
-                  })`}
-            </span>
-          </div>
-          <div className="captured_pieces_row white">
-            <div className="captured_pieces_group P"></div>
-            <div className="captured_pieces_group B"></div>
-            <div className="captured_pieces_group N"></div>
-            <div className="captured_pieces_group R"></div>
-            <div className="captured_pieces_group Q"></div>
-          </div>
-        </div>
+        </Route>
       </div>
     </Router>
   );

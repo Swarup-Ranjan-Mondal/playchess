@@ -20,7 +20,6 @@ const SetUpBoard = ({
   imageNameOfPieces,
 }) => {
   const [board, setBoard] = useState(null);
-
   const [gameId, setGameId] = useState("");
   const [chessBoard, setChessBoard] = useState("");
   const [legalMoves, setLegalMoves] = useState({});
@@ -39,12 +38,16 @@ const SetUpBoard = ({
 
   useEffect(() => {
     const fetchBoardDetails = async () => {
-      const { data } = await axios.get("/api/play");
+      try {
+        const { data } = await axios.get("/api/play");
 
-      setGameId(data.game_id);
-      setChessBoard(data.board);
-      setLegalMoves(data.legal_moves);
-      setPlayerTurn("white");
+        setGameId(data.game_id);
+        setChessBoard(data.board);
+        setLegalMoves(data.legal_moves);
+        setPlayerTurn("white");
+      } catch (err) {
+        console.log(err);
+      }
     };
 
     fetchBoardDetails();

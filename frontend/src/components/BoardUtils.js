@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import {
   moveThePiece,
@@ -12,6 +13,7 @@ import {
   castle,
   enPassant,
 } from "../utils/unique_moves";
+import PlayNow from "./PlayNow";
 
 const BoardUtils = ({
   board,
@@ -32,93 +34,12 @@ const BoardUtils = ({
   setStartNewGame,
   imageNameOfPieces,
 }) => {
+  const { slug } = useParams();
+
   const [willPromote, setWillPromote] = useState(false);
   const [isFetchingMove, setIsFetchingMove] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [gameResult, setGameResult] = useState({});
-
-  useEffect(() => {
-    const setNewGame = async () => {
-      board.classList.add("waiting");
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-
-      const { data } = await axios.post(
-        "/api/new-game",
-        {
-          game_id: gameId,
-        },
-        config
-      );
-
-      setChessBoard("");
-      setLegalMoves(data.legal_moves);
-      setChessBoard(data.board);
-      document.querySelector(".moves_grid").innerHTML = "";
-      board.isEnginePlaying = false;
-
-      ["white", "black"].forEach((color) => {
-        ["P", "B", "N", "R", "Q"].forEach((pieceSymbol) => {
-          const capturedPiecesGroup = document.querySelector(
-            `.captured_pieces_row.${color} .captured_pieces_group.${pieceSymbol}`
-          );
-          capturedPiecesGroup.innerHTML = "";
-          capturedPiecesGroup.style.paddingLeft = "0rem";
-        });
-      });
-
-      board.moveNo = 0;
-      if (board.lastMove.initialSquare !== undefined) {
-        board.lastMove.initialSquare.classList.remove("initial");
-        board.lastMove.landingSquare.classList.remove("landing");
-      }
-      board.lastMove = {};
-
-      setStartNewGame(false);
-      setPlayerTurn("white");
-
-      board.classList.remove("waiting");
-    };
-
-    if (startNewGame && !isFetchingMove) {
-      setNewGame();
-    }
-  }, [startNewGame, isFetchingMove]);
-
-  useEffect(() => {
-    if (playedMove !== "") {
-      // Considering player1 plays with white pieces and player2 plays with black pieces
-      if (playerTurn === "white") {
-        if (player1 === "human" && !board.isEnginePlaying) {
-          playTheHumanMove(playedMove);
-        } else if (player1 === "engine" || board.isEnginePlaying) {
-          playTheEngineMove(playedMove);
-          board.isEnginePlaying = false;
-        }
-      } else if (playerTurn === "black") {
-        if (player2 === "human" && !board.isEnginePlaying) {
-          playTheHumanMove(playedMove);
-        } else if (player2 === "engine" || board.isEnginePlaying) {
-          playTheEngineMove(playedMove);
-          board.isEnginePlaying = false;
-        }
-      }
-    }
-  }, [playedMove]);
-
-  useEffect(() => {
-    if (board !== null && !isFetchingMove && !isGameOver && !startNewGame) {
-      if (playerTurn === "white" && player1 === "engine") {
-        getTheEngineMove(engine1);
-      } else if (playerTurn === "black" && player2 === "engine") {
-        getTheEngineMove(engine2);
-      }
-    }
-  }, [player1, player2, playerTurn]);
 
   const playTheHumanMove = async (move) => {
     if (board.lastMove.initialSquare !== undefined) {
@@ -228,11 +149,6 @@ const BoardUtils = ({
     setTurn();
   };
 
-  const setTurn = () => {
-    updateMoveHistory(board, playerTurn);
-    setPlayerTurn((turn) => (turn === "white" ? "black" : "white"));
-  };
-
   const runTheMove = async () => {
     board.classList.add("waiting");
 
@@ -325,6 +241,11 @@ const BoardUtils = ({
     board.classList.remove("waiting");
   };
 
+  const setTurn = () => {
+    updateMoveHistory(board, playerTurn);
+    setPlayerTurn((turn) => (turn === "white" ? "black" : "white"));
+  };
+
   const promote = (piece, promoteTo) => {
     board.onmouseup = null;
     var promotionSquare = playedMove.substring(2, 4);
@@ -370,7 +291,7 @@ const BoardUtils = ({
 
     piece.id = `${promotionPieceSymbol}${pieceNo === 1 ? "" : pieceNo}`;
     piece.classList.replace(piece.classList[2], promotionSquare);
-    piece.style.backgroundImage = `url(images/pieces/${promoteTo}_${
+    piece.style.backgroundImage = `url(/images/pieces/${promoteTo}_${
       playerTurn === "white" ? "lt" : "dk"
     }.svg)`;
 
@@ -405,7 +326,7 @@ const BoardUtils = ({
 
     const capturedPieceToBeShown = document.createElement("div");
     capturedPieceToBeShown.classList.add("new_captured_piece");
-    capturedPieceToBeShown.style.backgroundImage = `url(images/pieces/${
+    capturedPieceToBeShown.style.backgroundImage = `url(/images/pieces/${
       imageNameOfPieces[capturedPiece.id[0]]
     }.svg)`;
     capturedPieceToBeShown.style.marginLeft = "-1.2rem";
@@ -414,12 +335,35 @@ const BoardUtils = ({
 
   return (
     <>
+      {slug === "now" && (
+        <PlayNow
+          board={board}
+          gameId={gameId}
+          playerTurn={playerTurn}
+          playedMove={playedMove}
+          player1={player1}
+          player2={player2}
+          engine1={engine1}
+          engine2={engine2}
+          startNewGame={startNewGame}
+          isGameOver={isGameOver}
+          isFetchingMove={isFetchingMove}
+          getTheEngineMove={getTheEngineMove}
+          playTheHumanMove={playTheHumanMove}
+          playTheEngineMove={playTheEngineMove}
+          setChessBoard={setChessBoard}
+          setLegalMoves={setLegalMoves}
+          setPlayerTurn={setPlayerTurn}
+          setStartNewGame={setStartNewGame}
+        />
+      )}
+
       {willPromote && board !== null && (
         <div className={"pop_up_window"}>
           <div
             className={"promotion_piece"}
             style={{
-              backgroundImage: `url(images/pieces/queen_${
+              backgroundImage: `url(/images/pieces/queen_${
                 playerTurn === "white" ? "lt" : "dk"
               }.svg)`,
             }}
@@ -430,7 +374,7 @@ const BoardUtils = ({
           <div
             className={"promotion_piece"}
             style={{
-              backgroundImage: `url(images/pieces/rook_${
+              backgroundImage: `url(/images/pieces/rook_${
                 playerTurn === "white" ? "lt" : "dk"
               }.svg)`,
             }}
@@ -441,7 +385,7 @@ const BoardUtils = ({
           <div
             className={"promotion_piece"}
             style={{
-              backgroundImage: `url(images/pieces/bishop_${
+              backgroundImage: `url(/images/pieces/bishop_${
                 playerTurn === "white" ? "lt" : "dk"
               }.svg)`,
             }}
@@ -452,7 +396,7 @@ const BoardUtils = ({
           <div
             className={"promotion_piece"}
             style={{
-              backgroundImage: `url(images/pieces/knight_${
+              backgroundImage: `url(/images/pieces/knight_${
                 playerTurn === "white" ? "lt" : "dk"
               }.svg)`,
             }}
