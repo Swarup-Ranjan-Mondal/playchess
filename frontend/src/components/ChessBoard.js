@@ -1,18 +1,13 @@
 import React from "react";
-import SetUpBoard from "./SetUpBoard";
+import ChessPieces from "./ChessPieces";
 
 const ChessBoard = ({
-  player1,
-  player2,
-  engine1,
-  engine2,
-  startNewGame,
-  setStartNewGame,
+  ranks,
+  files,
+  chessBoard,
+  handleMouseDown,
   imageNameOfPieces,
 }) => {
-  const ranks = 8;
-  const files = 8;
-
   return (
     <div className="chess_board">
       {[...Array(ranks).keys()].map((rank) => (
@@ -42,15 +37,11 @@ const ChessBoard = ({
                 )}
 
                 {rank === 0 && file === 0 && (
-                  <SetUpBoard
+                  <ChessPieces
                     ranks={ranks}
                     files={files}
-                    player1={player1}
-                    player2={player2}
-                    engine1={engine1}
-                    engine2={engine2}
-                    startNewGame={startNewGame}
-                    setStartNewGame={setStartNewGame}
+                    chessBoard={chessBoard}
+                    handleMouseDown={handleMouseDown}
                     imageNameOfPieces={imageNameOfPieces}
                   />
                 )}

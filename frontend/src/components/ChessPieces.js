@@ -1,11 +1,11 @@
 import React from "react";
 
 const ChessPieces = ({
-  imageNameOfPieces,
   chessBoard,
   ranks,
   files,
   handleMouseDown,
+  imageNameOfPieces,
 }) => {
   const getAnIdOfPiece = (pieceSymbol, file) => {
     return pieceSymbol.toLowerCase() === "p"
