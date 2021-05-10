@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import ChessBoard from "./ChessBoard";
 import {
@@ -19,6 +20,8 @@ const SetUpBoard = ({
   setStartNewGame,
   imageNameOfPieces,
 }) => {
+  const { slug } = useParams();
+
   const [board, setBoard] = useState(null);
   const [gameId, setGameId] = useState("");
   const [chessBoard, setChessBoard] = useState("");
@@ -36,26 +39,7 @@ const SetUpBoard = ({
     }
   }, [board]);
 
-  useEffect(() => {
-    const fetchBoardDetails = async () => {
-      try {
-        const { data } = await axios.get("/api/play");
-
-        setGameId(data.game_id);
-        setChessBoard(data.board);
-        setLegalMoves(data.legal_moves);
-        setPlayerTurn("white");
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    fetchBoardDetails();
-  }, []);
-
   const handleMouseDown = (e) => {
-    e.preventDefault();
-
     if (e.target.classList[1] === playerTurn) {
       if (
         board.piece === undefined ||
@@ -103,8 +87,6 @@ const SetUpBoard = ({
   };
 
   const handleMouseUp = (e) => {
-    e.preventDefault();
-
     board.onmousemove = null;
     board.piece.style.transform = "translate(0px, 0px)";
 
@@ -156,11 +138,13 @@ const SetUpBoard = ({
         engine2={engine2}
         startNewGame={startNewGame}
         setChessBoard={setChessBoard}
+        setGameId={setGameId}
         setLegalMoves={setLegalMoves}
         setPlayerTurn={setPlayerTurn}
         setPlayedMove={setPlayedMove}
         setStartNewGame={setStartNewGame}
         imageNameOfPieces={imageNameOfPieces}
+        slug={slug}
       />
     </>
   );

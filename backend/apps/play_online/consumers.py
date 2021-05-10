@@ -25,6 +25,7 @@ class GameThreadConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
+        print('user joined with thread - ' + self.thread)
         await self.accept()
 
         # Sending the game details to the player when one connects
@@ -47,8 +48,12 @@ class GameThreadConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        self.playedMove = text_data_json['move']
-        response = self.game.playMove(self.playedMove)
+        move = text_data_json['move']
+
+        legal_moves = self.game.getLegalMoves()
+        self.playedMove = {move: legal_moves[move]}
+
+        response = self.game.playMove(move)
         if 'success' in response:
             response['type'] = 'move'
             response['move'] = self.playedMove
@@ -65,8 +70,8 @@ class GameThreadConsumer(AsyncWebsocketConsumer):
     # Receive move from room group
     async def move(self, event):
         move = event['move']
-        # Not doing anything if the consumer who has send the event in the grp has received it.
-        if hasattr(self, 'playedMove') and self.playedMove == move:
+        # Nothing to be done if the consumer who has send the event in the grp has received it.
+        if (not event['is_game_over']) and hasattr(self, 'playedMove') and self.playedMove == move:
             return
 
         # coping everything from event to response except 'type' key and its value

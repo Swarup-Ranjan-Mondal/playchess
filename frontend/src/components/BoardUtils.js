@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 import {
   moveThePiece,
@@ -14,6 +13,7 @@ import {
   enPassant,
 } from "../utils/unique_moves";
 import PlayNow from "./PlayNow";
+import PlayOnline from "./PlayOnline";
 
 const BoardUtils = ({
   board,
@@ -27,14 +27,18 @@ const BoardUtils = ({
   engine1,
   engine2,
   startNewGame,
+
   setChessBoard,
+  setGameId,
   setLegalMoves,
   setPlayerTurn,
   setPlayedMove,
   setStartNewGame,
+
   imageNameOfPieces,
+  slug,
 }) => {
-  const { slug } = useParams();
+  const [gameSocket, setGameSocket] = useState(null);
 
   const [willPromote, setWillPromote] = useState(false);
   const [isFetchingMove, setIsFetchingMove] = useState(false);
@@ -86,7 +90,15 @@ const BoardUtils = ({
       );
       board.lastMove.initialSquare.classList.add("initial");
       board.lastMove.landingSquare.classList.add("landing");
-      runTheMove();
+      if (slug === "now") {
+        runTheMove();
+      } else if (slug === "online") {
+        gameSocket.send(
+          JSON.stringify({
+            move,
+          })
+        );
+      }
       setTurn();
       board.piece = undefined;
     }
@@ -296,10 +308,8 @@ const BoardUtils = ({
     }.svg)`;
 
     if (humanMove) {
-      board.move =
-        legalMoves[
-          `${initialSquare}${promotionSquare}${promotionPieceSymbol.toLowerCase()}`
-        ];
+      const promotionMove = `${initialSquare}${promotionSquare}${promotionPieceSymbol.toLowerCase()}`;
+      board.move = legalMoves[promotionMove];
 
       unmarkMovableSquares(board);
       board.lastMove.initialSquare = document.querySelector(
@@ -312,7 +322,15 @@ const BoardUtils = ({
       board.lastMove.landingSquare.classList.add("landing");
       setTurn();
       board.piece = undefined;
-      runTheMove();
+      if (slug === "now") {
+        runTheMove();
+      } else if (slug === "online") {
+        gameSocket.send(
+          JSON.stringify({
+            move: promotionMove,
+          })
+        );
+      }
     }
 
     board.classList.remove("inactive");
@@ -352,9 +370,27 @@ const BoardUtils = ({
           playTheHumanMove={playTheHumanMove}
           playTheEngineMove={playTheEngineMove}
           setChessBoard={setChessBoard}
+          setGameId={setGameId}
           setLegalMoves={setLegalMoves}
           setPlayerTurn={setPlayerTurn}
           setStartNewGame={setStartNewGame}
+        />
+      )}
+
+      {slug === "online" && (
+        <PlayOnline
+          gameSocket={gameSocket}
+          board={board}
+          playedMove={playedMove}
+          playTheHumanMove={playTheHumanMove}
+          playTheEngineMove={playTheEngineMove}
+          setGameSocket={setGameSocket}
+          setChessBoard={setChessBoard}
+          setLegalMoves={setLegalMoves}
+          setPlayerTurn={setPlayerTurn}
+          setPlayedMove={setPlayedMove}
+          setIsGameOver={setIsGameOver}
+          setGameResult={setGameResult}
         />
       )}
 

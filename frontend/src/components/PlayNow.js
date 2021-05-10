@@ -13,14 +13,34 @@ const PlayNow = ({
   startNewGame,
   isGameOver,
   isFetchingMove,
+
   getTheEngineMove,
   playTheHumanMove,
   playTheEngineMove,
+
   setChessBoard,
+  setGameId,
   setLegalMoves,
   setPlayerTurn,
   setStartNewGame,
 }) => {
+  useEffect(() => {
+    const fetchBoardDetails = async () => {
+      try {
+        const { data } = await axios.get("/api/play");
+
+        setGameId(data.game_id);
+        setChessBoard(data.board);
+        setLegalMoves(data.legal_moves);
+        setPlayerTurn("white");
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchBoardDetails();
+  }, []);
+
   useEffect(() => {
     const setNewGame = async () => {
       board.classList.add("waiting");

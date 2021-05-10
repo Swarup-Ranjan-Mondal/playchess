@@ -182,16 +182,21 @@
   margin: 6px 0;
   width: 80%;
   height: 1.8rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 .captured_pieces_group {
-  display: inline-block;
   width: max-content;
   height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 .captured_pieces_group .new_captured_piece {
-  display: inline-block;
+  display: block;
   height: 100%;
   width: 1.8rem;
   background-repeat: no-repeat;
