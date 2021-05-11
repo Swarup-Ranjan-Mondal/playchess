@@ -159,6 +159,7 @@ const BoardUtils = ({
     board.lastMove.landingSquare.classList.add("landing");
 
     setTurn();
+    board.piece = undefined;
   };
 
   const runTheMove = async () => {
