@@ -1,3 +1,21 @@
+import { setPlayerTurn } from "../actions/gameActions";
+import store from "../store";
+
+export const imageNameOfPieces = {
+  B: "bishop-lt",
+  K: "king-lt",
+  N: "knight-lt",
+  P: "pawn-lt",
+  Q: "queen-lt",
+  R: "rook-lt",
+  b: "bishop-dk",
+  k: "king-dk",
+  n: "knight-dk",
+  p: "pawn-dk",
+  q: "queen-dk",
+  r: "rook-dk",
+};
+
 export const moveThePiece = (piece, squareId, ranks) => {
   if (squareId !== "") {
     var i = ranks - Number(squareId.charAt(1));
@@ -47,27 +65,51 @@ export const unmarkMovableSquares = (board) => {
   }
 };
 
-export const updateMoveHistory = (board, playerTurn) => {
-  const movesGrid = document.querySelector(".moves_grid");
+export const setTurn = (board) => {
+  const { playerTurn } = store.getState().gameDetails;
+  updateMoveHistory(board, playerTurn);
+  store.dispatch(setPlayerTurn(playerTurn === "white" ? "black" : "white"));
+};
+
+export const updateMoveHistory = (board) => {
+  const { playerTurn } = store.getState().gameDetails;
+  const movesGrid = document.querySelector(".moves-grid");
 
   if (playerTurn === "white") {
     board.moveNo += 1;
     const moveNo = document.createElement("div");
-    moveNo.classList.add("move_no");
+    moveNo.classList.add("move-no");
     moveNo.innerText = board.moveNo;
     movesGrid.appendChild(moveNo);
 
     const whiteMove = document.createElement("div");
-    whiteMove.classList.add("move_white");
+    whiteMove.classList.add("move-white");
     whiteMove.innerText = board.move;
     movesGrid.appendChild(whiteMove);
   } else if (playerTurn === "black") {
     const blackMove = document.createElement("div");
-    blackMove.classList.add("move_black");
+    blackMove.classList.add("move-black");
     blackMove.innerText = board.move;
     movesGrid.appendChild(blackMove);
   }
 
-  const moveHistory = document.querySelector(".move_history");
+  const moveHistory = document.querySelector(".move-history");
   moveHistory.scrollTop = moveHistory.scrollHeight;
+};
+
+export const showAsCapturedPiece = (capturedPiece) => {
+  const { playerTurn } = store.getState().gameDetails;
+
+  const capturedPiecesGroup = document.querySelector(
+    `.captured-pieces-row.${playerTurn} .captured-pieces-group.${capturedPiece.id[0].toUpperCase()}`
+  );
+  capturedPiecesGroup.style.paddingLeft = "1.2rem";
+
+  const capturedPieceToBeShown = document.createElement("div");
+  capturedPieceToBeShown.classList.add("new-captured-piece");
+  capturedPieceToBeShown.style.backgroundImage = `url(/images/pieces/${
+    imageNameOfPieces[capturedPiece.id[0]]
+  }.svg)`;
+  capturedPieceToBeShown.style.marginLeft = "-1.2rem";
+  capturedPiecesGroup.append(capturedPieceToBeShown);
 };

@@ -1,36 +1,32 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import ChessBoard from "./ChessBoard";
 import {
   isValidMove,
   markMovableSquares,
   unmarkMovableSquares,
 } from "../utils/helper";
-import BoardUtils from "./BoardUtils";
+import { setIsGameOver, setPlayedMove } from "../actions/gameActions";
+import { promote } from "../utils/uniqueMoves";
 
-const SetUpBoard = ({
-  ranks,
-  files,
-  player1,
-  player2,
-  engine1,
-  engine2,
-  startNewGame,
-  setStartNewGame,
-  imageNameOfPieces,
-}) => {
+const SetUpBoard = ({ ranks, files, board, gameSocket, setBoard, setSlug }) => {
+  const dispatch = useDispatch();
+
+  const { legalMoves, playerTurn } = useSelector((state) => state.gameDetails);
+  const { isGameOver, willPromote, gameResult } = useSelector(
+    (state) => state.gameStatus
+  );
+
   const { slug } = useParams();
 
-  const [board, setBoard] = useState(null);
-  const [gameId, setGameId] = useState("");
-  const [chessBoard, setChessBoard] = useState("");
-  const [legalMoves, setLegalMoves] = useState({});
-  const [playerTurn, setPlayerTurn] = useState("");
-  const [playedMove, setPlayedMove] = useState("");
+  useEffect(() => {
+    console.log("slug: " + slug);
+    setSlug(slug);
+  }, [slug]);
 
   useEffect(() => {
-    setBoard(document.querySelector(".chess_board"));
+    setBoard(document.querySelector(".chess-board"));
 
     if (board !== null) {
       board.moveNo = 0;
@@ -48,7 +44,7 @@ const SetUpBoard = ({
         unmarkMovableSquares(board);
         board.piece = e.target;
         board.piece.classList.add("draggable");
-        board.classList.add("dragging", "no_animation");
+        board.classList.add("dragging", "no-animation");
         markMovableSquares(board.piece, legalMoves, board);
 
         board.dragging = {};
@@ -95,14 +91,14 @@ const SetUpBoard = ({
         clearTimeout(board.dragging.timeout);
       }
       board.dragging.timeout = setTimeout(() => {
-        board.classList.remove("no_animation");
+        board.classList.remove("no-animation");
       }, 80);
     }
 
     var square = e.target.id;
 
     if (isValidMove(board.piece.classList[2], square, legalMoves)) {
-      setPlayedMove(`${board.piece.classList[2]}${square}`);
+      dispatch(setPlayedMove(`${board.piece.classList[2]}${square}`));
     }
 
     board.classList.remove("dragging", "capturing");
@@ -114,38 +110,79 @@ const SetUpBoard = ({
       <ChessBoard
         ranks={ranks}
         files={files}
-        chessBoard={chessBoard}
-        player1={player1}
-        player2={player2}
-        engine1={engine1}
-        engine2={engine2}
-        startNewGame={startNewGame}
-        setStartNewGame={setStartNewGame}
         handleMouseDown={handleMouseDown}
-        imageNameOfPieces={imageNameOfPieces}
       />
 
-      <BoardUtils
-        board={board}
-        ranks={ranks}
-        gameId={gameId}
-        legalMoves={legalMoves}
-        playerTurn={playerTurn}
-        playedMove={playedMove}
-        player1={player1}
-        player2={player2}
-        engine1={engine1}
-        engine2={engine2}
-        startNewGame={startNewGame}
-        setChessBoard={setChessBoard}
-        setGameId={setGameId}
-        setLegalMoves={setLegalMoves}
-        setPlayerTurn={setPlayerTurn}
-        setPlayedMove={setPlayedMove}
-        setStartNewGame={setStartNewGame}
-        imageNameOfPieces={imageNameOfPieces}
-        slug={slug}
-      />
+      {willPromote && board !== null && (
+        <div className={"pop-up-window"}>
+          <div
+            className={"promotion-piece"}
+            style={{
+              backgroundImage: `url(/images/pieces/queen-${
+                playerTurn === "white" ? "lt" : "dk"
+              }.svg)`,
+            }}
+            onMouseDown={() => {
+              promote(null, "queen", board, ranks, slug, gameSocket);
+            }}
+          />
+          <div
+            className={"promotion-piece"}
+            style={{
+              backgroundImage: `url(/images/pieces/rook-${
+                playerTurn === "white" ? "lt" : "dk"
+              }.svg)`,
+            }}
+            onMouseDown={() => {
+              promote(null, "rook", board, ranks, slug, gameSocket);
+            }}
+          />
+          <div
+            className={"promotion-piece"}
+            style={{
+              backgroundImage: `url(/images/pieces/bishop-${
+                playerTurn === "white" ? "lt" : "dk"
+              }.svg)`,
+            }}
+            onMouseDown={() => {
+              promote(null, "bishop", board, ranks, slug, gameSocket);
+            }}
+          />
+          <div
+            className={"promotion-piece"}
+            style={{
+              backgroundImage: `url(/images/pieces/knight-${
+                playerTurn === "white" ? "lt" : "dk"
+              }.svg)`,
+            }}
+            onMouseDown={() => {
+              promote(null, "knight", board, ranks, slug, gameSocket);
+            }}
+          />
+        </div>
+      )}
+
+      {isGameOver && (
+        <div className={"pop-up-window"}>
+          <div>
+            {/* The Outcome can be either Checkmate or Draw */}
+            {gameResult.outcome === "checkmate"
+              ? `${gameResult.winner} has checkmated ${gameResult.loser}!`
+              : `Draw by ${gameResult.reason}!`}
+            <br /> Game Over!
+          </div>
+          <div
+            className="cross-button"
+            onMouseDown={() => {
+              dispatch(setIsGameOver(false));
+              board.onmouseup = null;
+              document.querySelector(".App").classList.remove("inactive");
+            }}
+          >
+            +
+          </div>
+        </div>
+      )}
     </>
   );
 };

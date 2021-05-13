@@ -45,8 +45,8 @@ const DropDown = ({ options, value, onChange }) => {
   );
 
   return (
-    <div className="dropdown">
-      <div className={`options_list ${active && "active"}`}>
+    <div className="drop-down">
+      <div className={`options-list ${active && "active"}`}>
         {options.map((option, i) => (
           <div
             key={`${option}`}
@@ -63,7 +63,7 @@ const DropDown = ({ options, value, onChange }) => {
         {selected === "" ? "Select..." : selected}
         <div
           className="arrow"
-          style={{ backgroundImage: "url(/images/down_arrow.png)" }}
+          style={{ backgroundImage: "url(/images/down-arrow.png)" }}
         />
       </div>
     </div>

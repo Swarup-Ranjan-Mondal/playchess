@@ -1,4 +1,12 @@
-import { moveThePiece } from "./helper";
+import store from "../store";
+import { setWillPromote } from "../actions/gameActions";
+import {
+  moveThePiece,
+  setTurn,
+  showAsCapturedPiece,
+  unmarkMovableSquares,
+} from "./helper";
+import { pushTheMove } from "../actions/moveActions";
 
 export const isCastlingPossible = (piece, squareId) => {
   var squareOfPiece = piece.classList[2];
@@ -95,6 +103,86 @@ export const enPassant = (piece, squareId, ranks) => {
 
   moveThePiece(piece, squareId, ranks);
   pawnToBeCaptured.parentNode.removeChild(pawnToBeCaptured);
+};
+
+export const promote = (piece, promoteTo, board, ranks, slug, gameSocket) => {
+  const { legalMoves, playedMove, playerTurn } = store.getState().gameDetails;
+
+  board.onmouseup = null;
+  const promotionSquare = playedMove.substring(2, 4);
+  const pieceToBeCaptured = document.querySelector(`.piece.${promotionSquare}`);
+  var humanMove = false;
+
+  if (piece === null) {
+    piece = board.piece;
+    humanMove = true;
+  }
+
+  const initialSquare = piece.classList[2];
+  board.classList.add("inactive");
+  store.dispatch(setWillPromote(false));
+  moveThePiece(piece, promotionSquare, ranks);
+
+  if (humanMove === true && pieceToBeCaptured !== null) {
+    pieceToBeCaptured.classList.replace("piece", "captured_piece");
+    showAsCapturedPiece(pieceToBeCaptured);
+  }
+
+  var promotionPieceSymbol,
+    pieceNo = 1;
+
+  if (promoteTo === "queen") {
+    promotionPieceSymbol = playerTurn === "white" ? "Q" : "q";
+  } else if (promoteTo === "rook") {
+    promotionPieceSymbol = playerTurn === "white" ? "R" : "r";
+  } else if (promoteTo === "bishop") {
+    promotionPieceSymbol = playerTurn === "white" ? "B" : "b";
+  } else if (promoteTo === "knight") {
+    promotionPieceSymbol = playerTurn === "white" ? "N" : "n";
+  }
+
+  document.querySelectorAll(`.piece.${playerTurn}`).forEach((piece) => {
+    if (piece.id.includes(promotionPieceSymbol)) {
+      if (piece.id.length === 1) {
+        piece.id = piece.id.concat(`${pieceNo}`);
+      }
+      pieceNo++;
+    }
+  });
+
+  piece.id = `${promotionPieceSymbol}${pieceNo === 1 ? "" : pieceNo}`;
+  piece.classList.replace(piece.classList[2], promotionSquare);
+  piece.style.backgroundImage = `url(/images/pieces/${promoteTo}-${
+    playerTurn === "white" ? "lt" : "dk"
+  }.svg)`;
+
+  if (humanMove) {
+    const promotionMove = `${initialSquare}${promotionSquare}${promotionPieceSymbol.toLowerCase()}`;
+    board.move = legalMoves[promotionMove];
+
+    unmarkMovableSquares(board);
+    board.lastMove.initialSquare = document.querySelector(
+      `#${initialSquare}.square`
+    );
+    board.lastMove.landingSquare = document.querySelector(
+      `#${promotionSquare}.square`
+    );
+    board.lastMove.initialSquare.classList.add("initial");
+    board.lastMove.landingSquare.classList.add("landing");
+    setTurn(board);
+    board.piece = undefined;
+    if (slug === "now") {
+      store.dispatch(pushTheMove(board));
+    } else if (slug === "online") {
+      gameSocket.send(
+        JSON.stringify({
+          move: promotionMove,
+        })
+      );
+    }
+  }
+
+  board.classList.remove("inactive");
 };
 
 // temporary function

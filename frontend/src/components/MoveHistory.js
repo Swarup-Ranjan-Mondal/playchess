@@ -2,8 +2,8 @@ import React from "react";
 
 const MoveHistory = () => {
   return (
-    <div className="move_history">
-      <div className="moves_grid"></div>
+    <div className="move-history">
+      <div className="moves-grid"></div>
     </div>
   );
 };

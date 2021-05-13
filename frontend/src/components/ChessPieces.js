@@ -1,12 +1,7 @@
 import React from "react";
+import { imageNameOfPieces } from "../utils/helper";
 
-const ChessPieces = ({
-  chessBoard,
-  ranks,
-  files,
-  handleMouseDown,
-  imageNameOfPieces,
-}) => {
+const ChessPieces = ({ chessBoard, ranks, files, handleMouseDown }) => {
   const getAnIdOfPiece = (pieceSymbol, file) => {
     return pieceSymbol.toLowerCase() === "p"
       ? `${pieceSymbol}${file + 1}`

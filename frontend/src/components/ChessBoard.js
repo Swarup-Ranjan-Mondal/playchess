@@ -1,15 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import ChessPieces from "./ChessPieces";
 
-const ChessBoard = ({
-  ranks,
-  files,
-  chessBoard,
-  handleMouseDown,
-  imageNameOfPieces,
-}) => {
+const ChessBoard = ({ ranks, files, handleMouseDown }) => {
+  const { chessBoard } = useSelector((state) => state.gameDetails);
+
   return (
-    <div className="chess_board">
+    <div className="chess-board">
       {[...Array(ranks).keys()].map((rank) => (
         <div className="rank" key={rank.toString()}>
           {[...Array(files).keys()].map((file) => {
@@ -21,7 +18,7 @@ const ChessBoard = ({
                 id={`${String.fromCharCode(97 + file)}${ranks - rank}`}
                 className={`square ${color}`}
                 style={{
-                  backgroundImage: `url(/images/squares/square_${
+                  backgroundImage: `url(/images/squares/square-${
                     color[0] + color[color.length - 1]
                   }.png)`,
                 }}
@@ -42,7 +39,6 @@ const ChessBoard = ({
                     files={files}
                     chessBoard={chessBoard}
                     handleMouseDown={handleMouseDown}
-                    imageNameOfPieces={imageNameOfPieces}
                   />
                 )}
               </div>

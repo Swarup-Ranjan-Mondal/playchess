@@ -1,11 +1,11 @@
-.dropdown {
+.drop-down {
   min-width: 100%;
   width: max-content;
   display: flex;
   flex-direction: column;
 }
 
-.options_list {
+.options-list {
   color: #f5f6fa;
   background-color: #2f3640;
   max-height: 0;
@@ -60,12 +60,12 @@
   transition: all 0.4s ease-in-out;
 }
 
-.options_list.active {
+.options-list.active {
   max-height: 240px;
   opacity: 0.98;
 }
 
-.options_list.active + .select .arrow {
+.options-list.active + .select .arrow {
   transform: rotate(-180deg);
   top: -5px;
   right: 0;

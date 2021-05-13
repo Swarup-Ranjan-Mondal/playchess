@@ -1,18 +1,19 @@
 import React from "react";
-import DropDown from "./DropDown";
-
-const Players = ({
-  playerOptions,
-  engineOptions,
-  player1,
-  player2,
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setEngine1,
+  setEngine2,
   setPlayer1,
   setPlayer2,
-  engine1,
-  setEngine1,
-  engine2,
-  setEngine2,
-}) => {
+} from "../actions/gameActions";
+import DropDown from "./DropDown";
+
+const Players = ({ playerOptions, engineOptions }) => {
+  const dispatch = useDispatch();
+
+  const { player1, player2 } = useSelector((state) => state.players);
+  const { engine1, engine2 } = useSelector((state) => state.engines);
+
   return (
     <>
       <div className="players">
@@ -21,7 +22,7 @@ const Players = ({
           <DropDown
             options={playerOptions}
             value={player1}
-            onChange={(e) => setPlayer1(e.target.value)}
+            onChange={(e) => dispatch(setPlayer1(e.target.value))}
           />
         </div>
         <div className="player2">
@@ -29,7 +30,7 @@ const Players = ({
           <DropDown
             options={playerOptions}
             value={player2}
-            onChange={(e) => setPlayer2(e.target.value)}
+            onChange={(e) => dispatch(setPlayer2(e.target.value))}
           />
         </div>
       </div>
@@ -39,7 +40,7 @@ const Players = ({
             <DropDown
               options={engineOptions}
               value={engine1}
-              onChange={(e) => setEngine1(e.target.value)}
+              onChange={(e) => dispatch(setEngine1(e.target.value))}
             />
           )}
         </div>
@@ -48,7 +49,7 @@ const Players = ({
             <DropDown
               options={engineOptions}
               value={engine2}
-              onChange={(e) => setEngine2(e.target.value)}
+              onChange={(e) => dispatch(setEngine2(e.target.value))}
             />
           )}
         </div>
