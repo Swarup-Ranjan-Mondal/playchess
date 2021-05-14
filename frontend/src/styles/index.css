@@ -15,6 +15,7 @@
   width: 100vw;
   display: flex;
   flex-direction: row;
+  justify-content: center;
   background-color: #dedad5;
   user-select: none; /* Chrome and Opera */
   -moz-user-select: none; /* Firefox */
