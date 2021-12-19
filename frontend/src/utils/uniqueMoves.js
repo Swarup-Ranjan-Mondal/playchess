@@ -6,7 +6,6 @@ import {
   showAsCapturedPiece,
   unmarkMovableSquares,
 } from "./helper";
-import { pushTheMove } from "../actions/moveActions";
 
 export const isCastlingPossible = (piece, squareId) => {
   var squareOfPiece = piece.classList[2];
@@ -171,15 +170,11 @@ export const promote = (piece, promoteTo, board, ranks, slug, gameSocket) => {
     board.lastMove.landingSquare.classList.add("landing");
     setTurn(board);
     board.piece = undefined;
-    if (slug === "now") {
-      store.dispatch(pushTheMove(board));
-    } else if (slug === "online") {
-      gameSocket.send(
-        JSON.stringify({
-          move: promotionMove,
-        })
-      );
-    }
+    gameSocket.send(
+      JSON.stringify({
+        move: promotionMove,
+      })
+    );
   }
 
   board.classList.remove("inactive");

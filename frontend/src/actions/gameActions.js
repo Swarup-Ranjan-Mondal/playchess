@@ -1,10 +1,3 @@
-export const setGameId = (gameId) => {
-  return {
-    type: "SET_GAME_ID",
-    payload: gameId,
-  };
-};
-
 export const setChessBoard = (chessBoard) => {
   return {
     type: "SET_CHESS_BOARD",
@@ -87,4 +80,22 @@ export const setStartNewGame = (startNewGame) => {
     type: "START_NEW_GAME",
     payload: startNewGame,
   };
+};
+
+export const resetGame = () => (dispatch, getState) => {
+  dispatch(setChessBoard(""));
+  dispatch(setLegalMoves([]));
+  dispatch(setPlayerTurn(""));
+  dispatch(setPlayedMove(""));
+
+  dispatch(setPlayer1(""));
+  dispatch(setPlayer2(""));
+
+  dispatch(setEngine1(""));
+  dispatch(setEngine2(""));
+
+  dispatch(setGameResult({}));
+  dispatch(setIsGameOver(false));
+  dispatch(setWillPromote(false));
+  dispatch(setStartNewGame(false));
 };

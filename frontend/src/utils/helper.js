@@ -16,6 +16,19 @@ export const imageNameOfPieces = {
   r: "rook-dk",
 };
 
+export const toToggleCase = (string) => {
+  var str = "";
+
+  string.split(" ").forEach((word, i) => {
+    if (i !== 0) {
+      str += " ";
+    }
+    str += word[0].toUpperCase() + word.replace(word[0], "");
+  });
+
+  return str;
+};
+
 export const moveThePiece = (piece, squareId, ranks) => {
   if (squareId !== "") {
     var i = ranks - Number(squareId.charAt(1));
@@ -103,13 +116,13 @@ export const showAsCapturedPiece = (capturedPiece) => {
   const capturedPiecesGroup = document.querySelector(
     `.captured-pieces-row.${playerTurn} .captured-pieces-group.${capturedPiece.id[0].toUpperCase()}`
   );
-  capturedPiecesGroup.style.paddingLeft = "1.2rem";
+  capturedPiecesGroup.style.paddingLeft = "0.6em";
 
   const capturedPieceToBeShown = document.createElement("div");
   capturedPieceToBeShown.classList.add("new-captured-piece");
   capturedPieceToBeShown.style.backgroundImage = `url(/images/pieces/${
     imageNameOfPieces[capturedPiece.id[0]]
   }.svg)`;
-  capturedPieceToBeShown.style.marginLeft = "-1.2rem";
+  capturedPieceToBeShown.style.marginLeft = "-0.6em";
   capturedPiecesGroup.append(capturedPieceToBeShown);
 };

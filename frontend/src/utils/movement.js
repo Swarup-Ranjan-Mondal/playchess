@@ -1,6 +1,5 @@
-import { setWillPromote } from "../actions/gameActions";
-import { pushTheMove } from "../actions/moveActions";
 import store from "../store";
+import { setWillPromote } from "../actions/gameActions";
 import {
   moveThePiece,
   setTurn,
@@ -67,16 +66,11 @@ export const playTheHumanMove = async (
     );
     board.lastMove.initialSquare.classList.add("initial");
     board.lastMove.landingSquare.classList.add("landing");
-    if (slug === "now") {
-      console.log("pushing the move to the server");
-      store.dispatch(pushTheMove(board));
-    } else if (slug === "online") {
-      gameSocket.send(
-        JSON.stringify({
-          move,
-        })
-      );
-    }
+    gameSocket.send(
+      JSON.stringify({
+        move,
+      })
+    );
     setTurn(board);
     board.piece = undefined;
   }

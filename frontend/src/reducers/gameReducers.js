@@ -1,6 +1,5 @@
 export const gameDetailsReducer = (
   state = {
-    gameId: "",
     chessBoard: "",
     legalMoves: [],
     playerTurn: "",
@@ -9,11 +8,6 @@ export const gameDetailsReducer = (
   action
 ) => {
   switch (action.type) {
-    case "SET_GAME_ID":
-      return {
-        ...state,
-        gameId: action.payload,
-      };
     case "SET_CHESS_BOARD":
       return {
         ...state,
@@ -41,8 +35,8 @@ export const gameDetailsReducer = (
 
 export const playersReducer = (
   state = {
-    player1: "human",
-    player2: "engine",
+    player1: "",
+    player2: "",
   },
   action
 ) => {
@@ -64,8 +58,8 @@ export const playersReducer = (
 
 export const enginesReducer = (
   state = {
-    engine1: "stockfish",
-    engine2: "stockfish",
+    engine1: "",
+    engine2: "",
   },
   action
 ) => {

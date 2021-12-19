@@ -1,0 +1,57 @@
+.container {
+  display: grid;
+}
+
+.portrait .container {
+  grid-template-rows: repeat(5, auto) 20px auto;
+  grid-template-areas:
+    "user-top"
+    "captured-top"
+    "board"
+    "captured-bot"
+    "user-bot"
+    "."
+    "move-hist";
+}
+
+.landscape .container {
+  grid-template-columns: minmax(max-content, 1fr) minmax(240px, 320px);
+  grid-template-rows:
+    1fr
+    auto
+    max(10px, 2vmin)
+    repeat(3, auto)
+    max(10px, 2vmin)
+    auto
+    1fr;
+  grid-template-areas:
+    "board ."
+    "board captured-top"
+    "board ."
+    "board user-top"
+    "board move-hist"
+    "board user-bot"
+    "board ."
+    "board captured-bot"
+    "board .";
+  grid-column-gap: 15px;
+}
+
+.promotion-piece {
+  width: calc(var(--board-width) / var(--files));
+  height: calc(var(--board-height) / var(--ranks));
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.promotion-piece:hover {
+  background-color: rgba(82, 81, 81, 0.5);
+  border-radius: 10px;
+}
+
+.promotion-piece:active {
+  background-color: rgba(120, 121, 121, 0.4);
+  border-radius: 10px;
+}

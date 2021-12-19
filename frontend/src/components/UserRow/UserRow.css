@@ -1,0 +1,41 @@
+.user-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #262421;
+}
+
+.user-row.top {
+  grid-area: user-top;
+  border-radius: 10px 10px 0 0;
+}
+
+.user-row.bottom {
+  grid-area: user-bot;
+  border-radius: 0 0 10px 10px;
+}
+
+.user-row .status {
+  width: 0.8em;
+  height: 0.8em;
+  margin: 0 12px 0 15px;
+  border-radius: 50%;
+  background: #72aa33;
+}
+
+.user-row span {
+  color: #f3e5ca;
+  font-weight: bold;
+  font-family: "Noto Sans", Sans-Serif;
+}
+
+.portrait .user-row {
+  height: 30px;
+  font-size: 14px;
+}
+
+.landscape .user-row {
+  height: 40px;
+  font-size: 15px;
+}

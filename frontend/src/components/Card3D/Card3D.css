@@ -1,0 +1,48 @@
+.card-3d {
+  height: 6rem;
+  min-width: 100%;
+  padding: 10px 15px;
+  display: flex;
+  flex-direction: row;
+  color: #000;
+  border-radius: 10px;
+  border-bottom: 4px solid #00000033;
+  box-shadow: 0px -0.5px 8px 0.5px #0000004d;
+  transform: rotateY(25deg) rotateX(20deg);
+  cursor: pointer;
+}
+
+.card-3d:hover {
+  transition: all 300ms ease-out;
+  transform: scale(1.05) rotateY(0deg) rotateX(0deg);
+}
+
+.card-3d:active {
+  box-shadow: inset 0px -0.5px 8px 0.5px #0000004d;
+}
+
+.card-3d img {
+  height: 70px;
+}
+
+.card-3d span {
+  margin: auto 0;
+  width: 100%;
+  height: max-content;
+  text-align: center;
+  font-size: 2.25rem;
+  font-weight: 900;
+}
+
+.portrait .card-3d {
+  transform: scale(0.95);
+}
+
+.portrait .card-3d:hover,
+.portrait .card-3d:active {
+  transform: scale(1.05);
+}
+
+.portrait .card-3d span {
+  font-size: 1.75rem;
+}

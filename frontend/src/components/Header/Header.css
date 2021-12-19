@@ -1,0 +1,46 @@
+header {
+  width: 100%;
+  height: var(--header-height);
+  padding: 4px;
+
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-start;
+
+  color: #fff;
+  background: #b46c27;
+  box-shadow: 0 0 3px 0 #0e0e0e;
+  z-index: 100;
+}
+
+header button {
+  width: 48px;
+  height: 36px;
+  padding: 0 8px;
+  border: none;
+  color: inherit;
+  background: inherit;
+}
+
+header button svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+header a {
+  margin-left: 20px;
+  text-decoration: none;
+  font-size: 1.25rem;
+  color: #fff;
+}
+
+@media only screen and (min-width: 1002px) {
+  header {
+    padding: 8px;
+  }
+
+  header button {
+    display: none;
+  }
+}

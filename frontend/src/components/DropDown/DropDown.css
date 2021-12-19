@@ -1,0 +1,58 @@
+.drop-down {
+  min-width: 100%;
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.select {
+  min-width: 100%;
+  width: max-content;
+  height: max-content;
+  margin-bottom: 2px;
+  padding: 10px 38px 10px 20px;
+  color: #f5f6fa;
+  background: #2f3640;
+  border-radius: 8px;
+  opacity: 0.95;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+.select svg {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  height: 18px;
+  width: auto;
+  padding: 0 10px;
+  transform: translateY(-50%);
+}
+
+.options-list {
+  max-height: 0;
+  min-width: 100%;
+  width: max-content;
+  color: #f5f6fa;
+  background-color: #2f3640;
+  opacity: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 1;
+  transition: all 0.2s ease-out;
+}
+
+.options-list.active {
+  max-height: 240px;
+  opacity: 0.98;
+}
+
+.option {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.option:hover {
+  background: #414b57;
+}

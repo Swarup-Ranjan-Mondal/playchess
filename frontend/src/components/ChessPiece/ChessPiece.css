@@ -1,0 +1,24 @@
+.chess-board .piece {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  z-index: 1;
+  transition: inset 200ms;
+  -webkit-transition: inset 200ms;
+  cursor: pointer;
+}
+
+.chess-board .piece.draggable {
+  z-index: 2;
+}
+
+.chess-board.dragging .piece,
+.chess-board.capturing .piece {
+  pointer-events: none;
+}
+
+.chess-board.no-animation .piece {
+  transition: none;
+  -webkit-transition: none;
+}

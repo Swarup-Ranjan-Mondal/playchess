@@ -1,0 +1,67 @@
+:root {
+  --header-height: 56px;
+  --sidenav-width: 240px;
+  --board-width: 80vmin;
+  --board-height: 80vmin;
+  --ranks: 8;
+  --files: 8;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  /* Firefox scrollbar styling */
+  /* thumb and track color */
+  scrollbar-color: rgb(127, 127, 127) rgb(240, 240, 240);
+
+  /* width */
+  scrollbar-width: thin;
+  /*****/
+}
+
+/* Chrome scrollbar styling */
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* track */
+::-webkit-scrollbar-track {
+  background: rgb(240, 240, 240);
+}
+
+/* handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: rgb(127, 127, 127);
+}
+
+/* handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(95, 95, 95);
+}
+/*****/
+
+.btn {
+  padding: 15px 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  border-radius: 10px;
+  box-shadow: 2px 2px 4px #000000;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:active {
+  box-shadow: inset 3px 2px 10px 1px rgba(0, 0, 0, 0.7);
+}
+
+.btn-primary {
+  color: #ffffff;
+  background-color: green;
+}

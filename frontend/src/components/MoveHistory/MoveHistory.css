@@ -1,0 +1,37 @@
+.move-history {
+  height: calc(0.5 * var(--board-height));
+  grid-area: move-hist;
+  padding: 2px 4px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  background: #fff;
+  box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.moves-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 20% 40% 40%;
+  background: repeating-linear-gradient(
+    #e2c491 0 35.1px,
+    transparent 35.1px 70.2px
+  );
+}
+
+.move-no,
+.move-white,
+.move-black {
+  height: 35px;
+  padding: 8.5px 10px;
+  font-size: 18px;
+}
+
+.move-white,
+.move-black {
+  font-weight: bold;
+}
+
+.portrait .move-history {
+  border-radius: 5px;
+}

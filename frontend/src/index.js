@@ -1,10 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import "./styles/index.css";
-import "./styles/board.css";
 import ChessApp from "./ChessApp";
 import store from "./store";
+import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(

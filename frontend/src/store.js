@@ -7,15 +7,12 @@ import {
   playersReducer,
   gameStatusReducer,
 } from "./reducers/gameReducers";
-import { engineMoveReducer, pushMoveReducer } from "./reducers/moveReducers";
 
 const reducer = combineReducers({
   gameDetails: gameDetailsReducer,
   players: playersReducer,
   engines: enginesReducer,
   gameStatus: gameStatusReducer,
-  engineMove: engineMoveReducer,
-  pushMove: pushMoveReducer,
 });
 
 const initialState = {};
