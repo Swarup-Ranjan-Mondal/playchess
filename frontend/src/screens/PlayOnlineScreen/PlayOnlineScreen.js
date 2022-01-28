@@ -44,7 +44,7 @@ const PlayOnlineScreen = ({ ranks, files, resizeObserver }) => {
     if (gameSocket === null) {
       setGameSocket(
         new WebSocket(
-          `ws://${window.location.hostname}:${8000}/ws/play/online/`
+          `ws://${window.location.hostname}:${8000}/ws/play-online/`
         )
       );
     } else {
@@ -127,7 +127,7 @@ const PlayOnlineScreen = ({ ranks, files, resizeObserver }) => {
       <Header />
 
       <main className="content">
-        <Route path="/play/:slug">
+        <Route path="/:slug">
           <GameZone
             ranks={ranks}
             files={files}

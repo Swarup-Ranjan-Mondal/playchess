@@ -7,8 +7,8 @@ from apps.play_online.consumers import GameThreadConsumer
 application = ProtocolTypeRouter({
     "websocket": AuthMiddlewareStack(
         URLRouter([
-            path("ws/play/now/", PlayConsumer.as_asgi()),
-            path("ws/play/online/", GameThreadConsumer.as_asgi()),
+            path("ws/play-now/", PlayConsumer.as_asgi()),
+            path("ws/play-online/", GameThreadConsumer.as_asgi()),
         ])
     ),
 })

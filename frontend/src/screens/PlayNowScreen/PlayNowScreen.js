@@ -91,7 +91,7 @@ const PlayNowScreen = ({ ranks, files, engineOptions, resizeObserver }) => {
   useEffect(() => {
     if (gameSocket === null) {
       setGameSocket(
-        new WebSocket(`ws://${window.location.hostname}:${8000}/ws/play/now/`)
+        new WebSocket(`ws://${window.location.hostname}:${8000}/ws/play-now/`)
       );
     } else {
       gameSocket.onmessage = (e) => {
@@ -195,7 +195,7 @@ const PlayNowScreen = ({ ranks, files, engineOptions, resizeObserver }) => {
       </Sidenav>
 
       <main className="content">
-        <Route path="/play/:slug">
+        <Route path="/:slug">
           <GameZone
             ranks={ranks}
             files={files}

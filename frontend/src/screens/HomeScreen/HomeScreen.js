@@ -18,7 +18,7 @@ const HomeScreen = ({ resizeObserver }) => {
         <section className="intro-section">
           <h1>Play Chess for players of all skills and age groups</h1>
 
-          <Link to="/play/now">
+          <Link to="/play-now">
             <Card3D
               cardTitle="Play Now"
               cardImgLocation="/images/play-icons/play-now.png"
@@ -26,7 +26,7 @@ const HomeScreen = ({ resizeObserver }) => {
             />
           </Link>
 
-          <Link to="/play/online">
+          <Link to="/play-online">
             <Card3D
               cardTitle="Play Online"
               cardImgLocation="/images/play-icons/play-online.png"
@@ -36,10 +36,7 @@ const HomeScreen = ({ resizeObserver }) => {
         </section>
 
         <section className="board-section">
-          <img
-            src="/images/boards/chess-board-with-pieces.png"
-            alt="Chess Board"
-          />
+          <img src="/images/games/legal-mate.gif" alt="Legal's mate game" />
         </section>
       </main>
     </>

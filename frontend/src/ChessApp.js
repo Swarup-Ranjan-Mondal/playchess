@@ -43,7 +43,7 @@ function ChessApp() {
             <HomeScreen resizeObserver={resizeObserver} />
           </Route>
 
-          <Route exact path="/play/now">
+          <Route exact path="/play-now">
             <PlayNowScreen
               ranks={ranks}
               files={files}
@@ -52,7 +52,7 @@ function ChessApp() {
             />
           </Route>
 
-          <Route exact path="/play/online">
+          <Route exact path="/play-online">
             <PlayOnlineScreen
               ranks={ranks}
               files={files}
