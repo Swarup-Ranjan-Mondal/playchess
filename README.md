@@ -59,7 +59,7 @@ $ docker run -d -p 6379:6379 redis:5
 **Play Chess** app also uses a microservice `Chess Engines` which it needs for getting a move from a chess engine based on board position. To start this microservice on port `8080`, run the following command:
 
 ```sh
-$ docker run -d -p 8080:8000 swarupranjanmondal/chess-engines
+$ docker run -d -p 8080:8000 swarupranjanmondal/chess-engines:2
 ```
 
 #### Backend
