@@ -21,11 +21,17 @@ header button {
   border: none;
   color: inherit;
   background: inherit;
+  cursor: pointer;
+}
+
+.back-button {
+  margin-left: 10px;
+  margin-right: -10px;
 }
 
 header button svg {
-  width: 2rem;
-  height: 2rem;
+  width: 1.7rem;
+  height: 1.7rem;
 }
 
 header a {
@@ -40,7 +46,7 @@ header a {
     padding: 8px;
   }
 
-  header button {
+  header button:not(.back-button) {
     display: none;
   }
 }

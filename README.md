@@ -18,7 +18,7 @@ This App is built with [React](https://reactjs.org/) frontend and [Django](https
 
 - Draw by stalemate, insufficient material, the fifty move rule and threefold repetition is recognized.
 
-**_Link to hosted demo: https://playchess.pro/_**
+**_Link to hosted demo: https://play-chess.site/_**
 
 ## Usage
 
