@@ -9,12 +9,17 @@ const ChessPiece = ({
   ranks,
   files,
   handleMouseDown,
+  reverse = false,
 }) => {
   const getPieceId = (pieceSymbol, file) => {
     return pieceSymbol.toLowerCase() === "p"
-      ? `${pieceSymbol}${file}`
+      ? `${pieceSymbol}${!reverse ? file : files - file + 1}`
       : pieceSymbol.toLowerCase() !== "k" && pieceSymbol.toLowerCase() !== "q"
-      ? `${pieceSymbol}${Math.ceil((2 * file) / files)}`
+      ? `${pieceSymbol}${
+          !reverse
+            ? Math.ceil((2 * file) / files)
+            : 3 - Math.ceil((2 * file) / files)
+        }`
       : pieceSymbol;
   };
 
@@ -23,7 +28,9 @@ const ChessPiece = ({
       id={getPieceId(pieceSymbol, file)}
       className={`piece ${
         pieceSymbol.toUpperCase() === pieceSymbol ? "white" : "black"
-      } ${String.fromCharCode(97 + (file - 1))}${rank}`}
+      } ${String.fromCharCode(97 + (!reverse ? file - 1 : files - file))}${
+        !reverse ? rank : ranks - rank + 1
+      }`}
       style={{
         backgroundImage: `url(/images/pieces/${imageNameOfPieces[pieceSymbol]}.svg)`,
         top: `${(ranks - rank) * 100}%`,

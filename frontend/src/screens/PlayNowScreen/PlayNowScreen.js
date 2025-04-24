@@ -24,7 +24,7 @@ import GameZone from "../../components/GameZone/GameZone";
 const PlayNowScreen = ({ ranks, files, engineOptions, resizeObserver }) => {
   const dispatch = useDispatch();
 
-  const { playerTurn, playedMove } = useSelector((state) => state.gameDetails);
+  const { playerTurn, playedMove, reverseBoard } = useSelector((state) => state.gameDetails);
   const { player1, player2 } = useSelector((state) => state.players);
   const { engine1, engine2 } = useSelector((state) => state.engines);
   const { isGameOver, startNewGame } = useSelector((state) => state.gameStatus);
@@ -147,17 +147,49 @@ const PlayNowScreen = ({ ranks, files, engineOptions, resizeObserver }) => {
       if (playerTurn === "white") {
         if (player1 === "human" && !board.isEnginePlaying) {
           board.classList.add("waiting");
-          playTheHumanMove(playedMove, board, ranks, slug, gameSocket);
+          playTheHumanMove(
+            playedMove,
+            board,
+            ranks,
+            files,
+            slug,
+            gameSocket,
+            reverseBoard
+          );
         } else if (player1 === "engine" || board.isEnginePlaying) {
-          autoPlayTheMove(playedMove, board, ranks, slug, gameSocket);
+          autoPlayTheMove(
+            playedMove,
+            board,
+            ranks,
+            files,
+            slug,
+            gameSocket,
+            reverseBoard
+          );
           board.isEnginePlaying = false;
         }
       } else if (playerTurn === "black") {
         if (player2 === "human" && !board.isEnginePlaying) {
           board.classList.add("waiting");
-          playTheHumanMove(playedMove, board, ranks, slug, gameSocket);
+          playTheHumanMove(
+            playedMove,
+            board,
+            ranks,
+            files,
+            slug,
+            gameSocket,
+            reverseBoard
+          );
         } else if (player2 === "engine" || board.isEnginePlaying) {
-          autoPlayTheMove(playedMove, board, ranks, slug, gameSocket);
+          autoPlayTheMove(
+            playedMove,
+            board,
+            ranks,
+            files,
+            slug,
+            gameSocket,
+            reverseBoard
+          );
           board.isEnginePlaying = false;
         }
       }
@@ -203,6 +235,7 @@ const PlayNowScreen = ({ ranks, files, engineOptions, resizeObserver }) => {
             setSlug={setSlug}
             setBoard={setBoard}
             gameSocket={gameSocket}
+            reverse={reverseBoard}
           />
         </Route>
       </main>

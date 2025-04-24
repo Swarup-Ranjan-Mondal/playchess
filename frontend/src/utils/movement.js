@@ -19,8 +19,10 @@ export const playTheHumanMove = async (
   move,
   board,
   ranks,
+  files,
   slug,
-  gameSocket
+  gameSocket,
+  reverse = false
 ) => {
   const { legalMoves } = store.getState().gameDetails;
   if (board.lastMove.initialSquare !== undefined) {
@@ -45,12 +47,14 @@ export const playTheHumanMove = async (
           2
           ? "short"
           : "long",
-        ranks
+        ranks,
+        files,
+        reverse
       );
     } else if (isEnPassantPossible(board.piece, landingSquare)) {
-      enPassant(board.piece, landingSquare, ranks);
+      enPassant(board.piece, landingSquare, ranks, files, reverse);
     } else {
-      moveThePiece(board.piece, landingSquare, ranks);
+      moveThePiece(board.piece, landingSquare, ranks, files, reverse);
       if (piece !== null) {
         piece.classList.replace("piece", "captured_piece");
         showAsCapturedPiece(piece);
@@ -76,7 +80,15 @@ export const playTheHumanMove = async (
   }
 };
 
-export const autoPlayTheMove = (move, board, ranks, slug, gameSocket) => {
+export const autoPlayTheMove = (
+  move,
+  board,
+  ranks,
+  files,
+  slug,
+  gameSocket,
+  reverse = false
+) => {
   unmarkMovableSquares(board);
   if (board.lastMove.initialSquare !== undefined) {
     board.lastMove.initialSquare.classList.remove("initial");
@@ -95,10 +107,12 @@ export const autoPlayTheMove = (move, board, ranks, slug, gameSocket) => {
         2
         ? "short"
         : "long",
-      ranks
+      ranks,
+      files,
+      reverse
     );
   } else if (isEnPassantPossible(pieceToBeMoved, finalPostion)) {
-    enPassant(pieceToBeMoved, finalPostion, ranks);
+    enPassant(pieceToBeMoved, finalPostion, ranks, files, reverse);
   } else if (isPromotionPossible(pieceToBeMoved, finalPostion)) {
     promote(
       pieceToBeMoved,
@@ -111,11 +125,13 @@ export const autoPlayTheMove = (move, board, ranks, slug, gameSocket) => {
         : "knight",
       board,
       ranks,
+      files,
       slug,
-      gameSocket
+      gameSocket,
+      reverse
     );
   } else {
-    moveThePiece(pieceToBeMoved, finalPostion, ranks);
+    moveThePiece(pieceToBeMoved, finalPostion, ranks, files, reverse);
   }
 
   if (pieceToBeCaptured !== null) {

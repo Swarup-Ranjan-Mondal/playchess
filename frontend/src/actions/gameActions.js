@@ -26,6 +26,13 @@ export const setPlayedMove = (playedMove) => {
   };
 };
 
+export const setReverseBoard = (reverseBoard) => {
+  return {
+    type: "REVERSE_BOARD",
+    payload: reverseBoard,
+  };
+};
+
 export const setPlayer1 = (player1) => {
   return {
     type: "SET_PLAYER_1",

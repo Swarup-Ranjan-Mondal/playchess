@@ -16,7 +16,7 @@ import CapturedPiecesRow from "../CapturedPiecesRow/CapturedPiecesRow";
 import MoveHistory from "../MoveHistory/MoveHistory";
 import UserRow from "../UserRow/UserRow";
 
-const GameZone = ({ ranks, files, board, gameSocket, setBoard, setSlug }) => {
+const GameZone = ({ ranks, files, board, gameSocket, setBoard, setSlug, reverse = true }) => {
   const dispatch = useDispatch();
 
   const { player1, player2 } = useSelector((state) => state.players);
@@ -152,6 +152,7 @@ const GameZone = ({ ranks, files, board, gameSocket, setBoard, setSlug }) => {
           ranks={ranks}
           files={files}
           handleMouseDown={handleMouseDown}
+          reverse={reverse}
         />
 
         <CapturedPiecesRow playerSide="black" />
@@ -202,7 +203,7 @@ const GameZone = ({ ranks, files, board, gameSocket, setBoard, setSlug }) => {
                 }.svg)`,
               }}
               onMouseDown={() => {
-                promote(null, pieceName, board, ranks, slug, gameSocket);
+                promote(null, pieceName, board, ranks, files, slug, gameSocket, reverse);
               }}
             />
           ))}

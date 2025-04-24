@@ -10,6 +10,7 @@ import {
   setLegalMoves,
   setPlayedMove,
   setPlayerTurn,
+  setReverseBoard,
   resetGame,
 } from "../../actions/gameActions";
 import { autoPlayTheMove, playTheHumanMove } from "../../utils/movement";
@@ -20,7 +21,9 @@ import PopupWindow from "../../components/PopupWindow/PopupWindow";
 const PlayOnlineScreen = ({ ranks, files, resizeObserver }) => {
   const dispatch = useDispatch();
 
-  const { playedMove } = useSelector((state) => state.gameDetails);
+  const { playedMove, reverseBoard } = useSelector(
+    (state) => state.gameDetails
+  );
 
   const [board, setBoard] = useState(null);
   const [gameSocket, setGameSocket] = useState(null);
@@ -54,12 +57,14 @@ const PlayOnlineScreen = ({ ranks, files, resizeObserver }) => {
         if (data.board) {
           dispatch(setChessBoard(data.board));
           dispatch(setPlayerTurn("white"));
+          dispatch(setReverseBoard(true));
         }
         if (data.legal_moves) {
           dispatch(setLegalMoves(data.legal_moves));
         }
         if (data.waiting_message) {
           setWaitingMessage(data.waiting_message);
+          dispatch(setReverseBoard(false));
         } else if (data.player_connected) {
           setWaitingMessage("");
         }
@@ -114,10 +119,26 @@ const PlayOnlineScreen = ({ ranks, files, resizeObserver }) => {
     if (playedMove !== "") {
       if (playOtherPlayerMove) {
         setPlayOtherPlayerMove(false);
-        autoPlayTheMove(playedMove, board, ranks, slug, gameSocket);
+        autoPlayTheMove(
+          playedMove,
+          board,
+          ranks,
+          files,
+          slug,
+          gameSocket,
+          reverseBoard
+        );
       } else {
         board.classList.add("waiting");
-        playTheHumanMove(playedMove, board, ranks, slug, gameSocket);
+        playTheHumanMove(
+          playedMove,
+          board,
+          ranks,
+          files,
+          slug,
+          gameSocket,
+          reverseBoard
+        );
       }
     }
   }, [playedMove]);
@@ -135,6 +156,7 @@ const PlayOnlineScreen = ({ ranks, files, resizeObserver }) => {
             setSlug={setSlug}
             setBoard={setBoard}
             gameSocket={gameSocket}
+            reverse={reverseBoard}
           />
 
           {waitingMessage !== "" && (

@@ -1,12 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./ChessBoard.css";
 import { useSelector } from "react-redux";
 import ChessPiece from "../ChessPiece/ChessPiece";
 
-const ChessBoard = ({ ranks, files, handleMouseDown }) => {
-  const { chessBoard } = useSelector((state) => state.gameDetails);
+const ChessBoard = ({ ranks, files, handleMouseDown, reverse = false }) => {
+  let { chessBoard } = useSelector((state) => state.gameDetails);
 
-  useEffect(() => {}, [chessBoard]);
+  if (reverse) {
+    chessBoard = chessBoard
+      .split("\n")
+      .reverse()
+      .map((row) => row.split(" ").reverse().join(" "))
+      .join("\n");
+  }
 
   return (
     <div className="board-container">
@@ -19,7 +25,9 @@ const ChessBoard = ({ ranks, files, handleMouseDown }) => {
             return (
               <div
                 key={`${rank}${file}`}
-                id={`${String.fromCharCode(97 + file)}${ranks - rank}`}
+                id={`${String.fromCharCode(
+                  97 + (!reverse ? file : files - file - 1)
+                )}${!reverse ? ranks - rank : rank + 1}`}
                 className={`square ${color}`}
                 style={{
                   backgroundImage: `url(/images/squares/square-${
@@ -29,12 +37,16 @@ const ChessBoard = ({ ranks, files, handleMouseDown }) => {
               >
                 {rank === ranks - 1 && (
                   <div className="notation alphabet">
-                    {`${String.fromCharCode(97 + file)}`}
+                    {`${String.fromCharCode(
+                      97 + (!reverse ? file : files - file - 1)
+                    )}`}
                   </div>
                 )}
 
                 {file === 0 && (
-                  <div className="notation number">{`${ranks - rank}`}</div>
+                  <div className="notation number">{`${
+                    !reverse ? ranks - rank : rank + 1
+                  }`}</div>
                 )}
 
                 {rank === 0 &&
@@ -58,6 +70,7 @@ const ChessBoard = ({ ranks, files, handleMouseDown }) => {
                                 ranks={ranks}
                                 files={files}
                                 handleMouseDown={handleMouseDown}
+                                reverse={reverse}
                               />
                             )
                         )

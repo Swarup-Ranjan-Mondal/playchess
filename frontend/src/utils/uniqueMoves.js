@@ -77,34 +77,47 @@ export const isPromotionPossible = (piece, squareId) => {
   return false;
 };
 
-export const castle = (color, type, ranks) => {
+export const castle = (color, type, ranks, files, reverse = false) => {
   if (color === "white" || color === "black") {
-    var king = document.getElementById(`${color === "white" ? "K" : "k"}`);
-    var rank = color === "white" ? 1 : 8;
+    const king = document.getElementById(`${color === "white" ? "K" : "k"}`);
+    const rank = color === "white" ? 1 : 8;
 
     if (type === "short") {
-      let rook = document.getElementById(`${color === "white" ? "R2" : "r2"}`);
-      moveThePiece(king, `g${rank}`, ranks);
-      moveThePiece(rook, `f${rank}`, ranks);
+      const rook = document.getElementById(
+        `${color === "white" ? "R2" : "r2"}`
+      );
+      moveThePiece(king, `g${rank}`, ranks, files, reverse);
+      moveThePiece(rook, `f${rank}`, ranks, files, reverse);
     } else if (type === "long") {
-      let rook = document.getElementById(`${color === "white" ? "R1" : "r1"}`);
-      moveThePiece(king, `c${rank}`, ranks);
-      moveThePiece(rook, `d${rank}`, ranks);
+      const rook = document.getElementById(
+        `${color === "white" ? "R1" : "r1"}`
+      );
+      moveThePiece(king, `c${rank}`, ranks, files, reverse);
+      moveThePiece(rook, `d${rank}`, ranks, files, reverse);
     }
   }
 };
 
-export const enPassant = (piece, squareId, ranks) => {
+export const enPassant = (piece, squareId, ranks, files, reverse = false) => {
   var pawnNo = squareId.charCodeAt(0) - 97 + 1;
   var pawnToBeCaptured = document.getElementById(
     `${piece.id.includes("P") ? "p" : "P"}${pawnNo}`
   );
 
-  moveThePiece(piece, squareId, ranks);
+  moveThePiece(piece, squareId, ranks, files, reverse);
   pawnToBeCaptured.parentNode.removeChild(pawnToBeCaptured);
 };
 
-export const promote = (piece, promoteTo, board, ranks, slug, gameSocket) => {
+export const promote = (
+  piece,
+  promoteTo,
+  board,
+  ranks,
+  files,
+  slug,
+  gameSocket,
+  reverse = false
+) => {
   const { legalMoves, playedMove, playerTurn } = store.getState().gameDetails;
 
   board.onmouseup = null;
@@ -120,7 +133,7 @@ export const promote = (piece, promoteTo, board, ranks, slug, gameSocket) => {
   const initialSquare = piece.classList[2];
   board.classList.add("inactive");
   store.dispatch(setWillPromote(false));
-  moveThePiece(piece, promotionSquare, ranks);
+  moveThePiece(piece, promotionSquare, ranks, files, reverse);
 
   if (humanMove === true && pieceToBeCaptured !== null) {
     pieceToBeCaptured.classList.replace("piece", "captured_piece");
@@ -158,6 +171,7 @@ export const promote = (piece, promoteTo, board, ranks, slug, gameSocket) => {
   if (humanMove) {
     const promotionMove = `${initialSquare}${promotionSquare}${promotionPieceSymbol.toLowerCase()}`;
     board.move = legalMoves[promotionMove];
+    console.log(promotionMove, board.move);
 
     unmarkMovableSquares(board);
     board.lastMove.initialSquare = document.querySelector(

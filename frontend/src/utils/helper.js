@@ -29,10 +29,10 @@ export const toToggleCase = (string) => {
   return str;
 };
 
-export const moveThePiece = (piece, squareId, ranks) => {
+export const moveThePiece = (piece, squareId, ranks, files, reverse = false) => {
   if (squareId !== "") {
-    var i = ranks - Number(squareId.charAt(1));
-    var j = squareId.charCodeAt(0) - 97;
+    var i = !reverse ? ranks - Number(squareId.charAt(1)) : Number(squareId.charAt(1) - 1);
+    var j = !reverse ?  squareId.charCodeAt(0) - 97 : files - (squareId.charCodeAt(0) - 97) - 1;
 
     piece.style.top = `${i * 100}%`;
     piece.style.right = `-${j * 100}%`;

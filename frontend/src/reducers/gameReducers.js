@@ -4,6 +4,7 @@ export const gameDetailsReducer = (
     legalMoves: [],
     playerTurn: "",
     playedMove: "",
+    reverseBoard: false,
   },
   action
 ) => {
@@ -28,6 +29,11 @@ export const gameDetailsReducer = (
         ...state,
         playedMove: action.payload,
       };
+    case "REVERSE_BOARD":
+      return {
+        ...state,
+        reverseBoard: action.payload,
+      }
     default:
       return state;
   }
