@@ -49,7 +49,7 @@
   color: #c9b083;
 }
 
-.square.movable::after {
+.square.movable::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -61,6 +61,16 @@
   background-clip: content-box;
   cursor: pointer;
   z-index: 5;
+}
+
+.square.movable:hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: inherit;
+  height: inherit;
+  background-color: #ffffff5d;
+  z-index: 6;
 }
 
 .square.initial::after,
