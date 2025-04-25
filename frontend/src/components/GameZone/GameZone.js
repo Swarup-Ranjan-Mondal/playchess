@@ -149,6 +149,8 @@ const GameZone = ({ ranks, files, board, gameSocket, setBoard, setSlug, reverse 
     <>
       <div className="container">
         <ChessBoard
+          board={board}
+          playerTurn={playerTurn}
           ranks={ranks}
           files={files}
           handleMouseDown={handleMouseDown}

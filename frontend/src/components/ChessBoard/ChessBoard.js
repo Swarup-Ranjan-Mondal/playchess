@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useRef } from "react";
 import "./ChessBoard.css";
 import { useSelector } from "react-redux";
 import ChessPiece from "../ChessPiece/ChessPiece";
+import { unmarkMovableSquares } from "../../utils/helper";
 
 const getSquareId = (rank, file, ranks, files, reverse) => {
   const col = String.fromCharCode(97 + (!reverse ? file : files - file - 1));
@@ -51,7 +52,14 @@ const renderChessPieces = (
     );
 };
 
-const ChessBoard = ({ ranks, files, handleMouseDown, reverse = false }) => {
+const ChessBoard = ({
+  board,
+  playerTurn,
+  ranks,
+  files,
+  handleMouseDown,
+  reverse = false,
+}) => {
   let { chessBoard } = useSelector((state) => state.gameDetails);
 
   if (reverse) {
@@ -61,6 +69,10 @@ const ChessBoard = ({ ranks, files, handleMouseDown, reverse = false }) => {
       .map((row) => row.split(" ").reverse().join(" "))
       .join("\n");
   }
+
+  const squareRefs = useRef(
+    [...Array(ranks * files)].map(() => React.createRef())
+  );
 
   return (
     <div className="board-container">
@@ -79,6 +91,20 @@ const ChessBoard = ({ ranks, files, handleMouseDown, reverse = false }) => {
             const backgroundImage = `/images/squares/square-${
               color[0] + color[color.length - 1]
             }.png`;
+            const squareIndex = rank * files + file;
+
+            const handleMouseDownOnSquare = (e) => {
+              const squareElement = squareRefs?.current[squareIndex]?.current;
+              if (!squareElement) return;
+
+              const isPiece = e.target.classList.contains("piece");
+              const isPlayerPiece = e.target.classList.contains(playerTurn);
+              const isMovable = squareElement.classList.contains("movable");
+
+              if ((!isPiece || !isPlayerPiece) && !isMovable) {
+                unmarkMovableSquares(board);
+              }
+            };
 
             return (
               <div
@@ -86,6 +112,8 @@ const ChessBoard = ({ ranks, files, handleMouseDown, reverse = false }) => {
                 id={squareId}
                 className={`square ${color}`}
                 style={{ backgroundImage: `url(${backgroundImage})` }}
+                ref={squareRefs.current[squareIndex]}
+                onMouseDown={handleMouseDownOnSquare}
               >
                 {alphabet && (
                   <div className="notation alphabet">{alphabet}</div>
