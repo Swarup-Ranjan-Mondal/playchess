@@ -1,7 +1,8 @@
 .chess-board .piece {
   position: absolute;
   background-repeat: no-repeat;
-  background-size: contain;
+  /* background-size: contain; */
+  background-size: 80% 80%;
   background-position: center;
   z-index: 1;
   transition: inset 200ms;
