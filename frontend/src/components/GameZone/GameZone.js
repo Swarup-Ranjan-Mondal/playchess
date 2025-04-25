@@ -121,6 +121,7 @@ const GameZone = ({ ranks, files, board, gameSocket, setBoard, setSlug, reverse 
         .querySelector(".content")
         .removeEventListener("touchmove", preventDefault, { passive: false });
     }
+    if(!board.piece) return;
 
     board.onmousemove = null;
     board.ontouchmove = null;
